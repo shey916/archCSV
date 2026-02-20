@@ -437,5 +437,47 @@ namespace archCSV
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        /// <summary>
+        /// Botón 8: Agregar nueva fila al DataGridView
+        /// </summary>
+        private void btnAgregar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Verificar que exista una estructura de tabla
+                if (tablaOriginal.Columns.Count == 0)
+                {
+                    MessageBox.Show("Primero debe cargar o crear una estructura de datos", "Advertencia", 
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Crear una nueva fila vacía
+                DataRow nuevaFila = tablaOriginal.NewRow();
+                
+                // Agregar la fila al DataTable
+                tablaOriginal.Rows.Add(nuevaFila);
+
+                // Refrescar el DataGridView
+                dataGridView1.DataSource = null;
+                dataGridView1.DataSource = tablaOriginal;
+
+                // Seleccionar la nueva fila y habilitar edición
+                int ultimoIndice = dataGridView1.Rows.Count - 1;
+                dataGridView1.CurrentCell = dataGridView1.Rows[ultimoIndice].Cells[0];
+                dataGridView1.Rows[ultimoIndice].Selected = true;
+                dataGridView1.BeginEdit(true);
+
+                MessageBox.Show("Nueva fila agregada. Puede comenzar a editar los datos.", 
+                    "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al agregar nueva fila: {ex.Message}", "Error", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
     }
 }
